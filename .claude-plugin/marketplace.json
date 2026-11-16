@@ -1,0 +1,14 @@
+{
+  "name": "devshop",
+  "owner": { "name": "jrnoorbaloch", "url": "https://github.com/jrnoorbaloch" },
+  "metadata": { "description": "DevShop — every free developer tier, on one shelf." },
+  "plugins": [
+    {
+      "name": "devshop",
+      "source": "./",
+      "description": "Claude skill that searches 1,300+ free developer tiers (hosting, databases, CI/CD, auth, email, AI APIs…).",
+      "version": "1.0.0",
+      "category": "development"
+    }
+  ]
+}

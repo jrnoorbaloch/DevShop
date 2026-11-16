@@ -10,6 +10,8 @@
 
 [**🌐 Live site**](https://jrnoorbaloch.github.io/DevShop/) ·
 [**🔌 JSON API**](https://jrnoorbaloch.github.io/DevShop/api/services.json) ·
+[**🤖 Claude skill**](https://jrnoorbaloch.github.io/DevShop/downloads/devshop-free-tiers.zip) ·
+[**📄 llms.txt**](https://jrnoorbaloch.github.io/DevShop/llms.txt) ·
 [**🗺️ Sitemap**](https://jrnoorbaloch.github.io/DevShop/sitemap.xml)
 
 [![Deploy](https://github.com/jrnoorbaloch/DevShop/actions/workflows/deploy.yml/badge.svg)](https://github.com/jrnoorbaloch/DevShop/actions/workflows/deploy.yml)
@@ -46,6 +48,8 @@ The original list lives in one long markdown file. DevShop parses it into struct
 | 📱 | **PWA / offline** | Installable, with a service worker that caches the catalogue. |
 | 🔌 | **Public JSON API** | `/api/services.json` and `/api/categories.json`. Static, no key, CORS-friendly via GitHub Pages. |
 | 🔄 | **Auto-sync** | A weekly GitHub Action pulls the latest upstream list, validates it, and redeploys. |
+| 🤖 | **Claude skill + plugin** | Ask Claude for "a free stack for my SaaS MVP" and it searches DevShop for you. |
+| 🧠 | **LLM-ready** | `llms.txt` and `llms-full.txt` ([llmstxt.org](https://llmstxt.org)), and AI crawlers explicitly allowed in `robots.txt`. |
 | ⚡ | **Zero dependencies** | Python standard library build plus vanilla JS and CSS. No framework, no bundler, no `node_modules`. |
 
 ## 🚀 SEO built in
@@ -58,6 +62,44 @@ DevShop is built to rank for searches like *"free postgres hosting"*, *"X free t
 - Canonical URLs, an auto-generated `sitemap.xml` (with `lastmod`), `robots.txt`, and an `opensearch.xml` so browsers can add DevShop as a search engine.
 - Internal linking between related services ("Alternatives to X") and neighbouring categories.
 - Semantic HTML, a skip link, `aria-live` result counts, reduced-motion support, and lazy-loaded favicons for good Core Web Vitals.
+
+## 🤖 Use DevShop with Claude and other LLMs
+
+### Claude skill: `devshop-free-tiers`
+
+The skill teaches Claude to search the DevShop catalogue (live API, with a bundled offline snapshot) and recommend free services with links and limits.
+
+**Claude.ai / Claude desktop app:** download [`devshop-free-tiers.zip`](https://jrnoorbaloch.github.io/DevShop/downloads/devshop-free-tiers.zip), then go to **Settings → Capabilities → Skills → Upload skill**.
+
+**Claude Code (plugin marketplace):**
+
+```bash
+/plugin marketplace add jrnoorbaloch/DevShop
+/plugin install devshop@devshop
+```
+
+**Claude Code (manual):** copy `skills/devshop-free-tiers` into `~/.claude/skills/`.
+
+Then ask something like:
+
+> *"I'm building a SaaS MVP. Give me a fully free stack: hosting, Postgres, auth, transactional email and error tracking, with no credit card if possible."*
+
+You can also run the skill's script directly:
+
+```bash
+python3 skills/devshop-free-tiers/scripts/find_free_tiers.py "postgres" --tag "No credit card"
+python3 skills/devshop-free-tiers/scripts/find_free_tiers.py --category web-hosting --json
+```
+
+### llms.txt for AI search
+
+| File | Purpose |
+|---|---|
+| [`/llms.txt`](https://jrnoorbaloch.github.io/DevShop/llms.txt) | Short site map for LLMs: what DevShop is, the data endpoints and every category |
+| [`/llms-full.txt`](https://jrnoorbaloch.github.io/DevShop/llms-full.txt) | The whole catalogue as Markdown in one file, easy to paste into any chat |
+| [`/api/services.json`](https://jrnoorbaloch.github.io/DevShop/api/services.json) | Structured data for agents and tools |
+
+`robots.txt` explicitly allows GPTBot, ClaudeBot, PerplexityBot, Google-Extended and other AI crawlers, so DevShop can be cited by AI answer engines (GEO).
 
 ## 🛠️ Run locally
 
@@ -77,6 +119,8 @@ All you need is Python 3.9+. There is nothing to install.
 DevShop/
 ├── data/source/free-for-dev.md   # upstream catalogue (synced weekly)
 ├── scripts/build.py              # parser + static site generator (stdlib only)
+├── skills/devshop-free-tiers/    # Claude skill (SKILL.md, search script, data snapshot)
+├── .claude-plugin/               # Claude Code plugin + marketplace manifest
 ├── static/
 │   ├── assets/                   # style.css, app.js, icons, OG image
 │   └── sw.js                     # service worker template
@@ -133,4 +177,4 @@ DevShop's code is released under the [MIT License](LICENSE). The catalogue data 
 
 ---
 
-<sub>**Keywords:** free tier, free developer tools, free hosting, free database, free postgres, free CI/CD, free API, free SaaS for developers, free cloud credits, free email API, free auth, free monitoring, free AI API, devops tools, free-for-dev, awesome list, developer resources.</sub>
+<sub>**Keywords:** free tier, llms.txt, claude skill, claude code plugin, AI agent tools, free developer tools, free hosting, free database, free postgres, free CI/CD, free API, free SaaS for developers, free cloud credits, free email API, free auth, free monitoring, free AI API, devops tools, free-for-dev, awesome list, developer resources.</sub>

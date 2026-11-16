@@ -1,0 +1,10 @@
+{
+  "name": "devshop",
+  "version": "1.0.0",
+  "description": "Find SaaS/PaaS/IaaS/API services with genuine free developer tiers (1,300+ services, 56 categories) from DevShop.",
+  "author": { "name": "jrnoorbaloch", "url": "https://github.com/jrnoorbaloch" },
+  "homepage": "https://jrnoorbaloch.github.io/DevShop/",
+  "repository": "https://github.com/jrnoorbaloch/DevShop",
+  "license": "MIT",
+  "keywords": ["free-tier", "developer-tools", "saas", "hosting", "devops"]
+}
