@@ -1,0 +1,37 @@
+name: Sync catalogue from free-for-dev
+
+on:
+  schedule:
+    - cron: "17 3 * * 1"   # every Monday 03:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  actions: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download latest list
+        run: |
+          curl -fsSL https://raw.githubusercontent.com/ripienaar/free-for-dev/master/README.md -o data/source/free-for-dev.md.new
+          # Sanity check: keep the old file if the new one parses to too few services
+          mv data/source/free-for-dev.md data/source/free-for-dev.md.old
+          mv data/source/free-for-dev.md.new data/source/free-for-dev.md
+          if ! SITE_URL=https://example.com python3 scripts/build.py; then
+            mv data/source/free-for-dev.md.old data/source/free-for-dev.md; exit 1
+          fi
+          rm -f data/source/free-for-dev.md.old
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- data/source; then echo "No changes"; exit 0; fi
+          git config user.name "devshop-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/source && git commit -m "chore(data): sync free-for-dev catalogue" && git push
+          gh workflow run deploy.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}
